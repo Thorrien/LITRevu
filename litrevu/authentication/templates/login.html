@@ -1,10 +1,27 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<p>Pas encore membre ? <a href="{% url 'signup' %}">Inscrivez-vous maintenant !</a></p>
-    <p>{{ message }}</p>
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit" >Se connecter</button>
-    </form>
+<div class="row align-items-center justify-content-center">
+    <p><p/>
+</div>
+<div class="row align-items-center justify-content-center">
+    <!-- Partie gauche pour le bouton d'inscription -->
+    <div class="col-md-6">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <p class="text-center mb-3">Inscrivez-vous maintenant</p>
+            <a href="{% url 'signup' %}" class="btn btn-primary">S'inscrire</a>
+        </div>
+    </div>
+    <!-- Partie droite pour le formulaire de connexion -->
+    <div class="col-md-6">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <p class="text-center">{{ message }}</p>
+            <form method="post">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Se connecter</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock content %}
