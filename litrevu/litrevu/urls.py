@@ -25,4 +25,16 @@ urlpatterns = [
     path('logout/', authentication.views.logout_user, name='logout'),
     path('flux/', application.views.flux, name='flux'),
     path('signup/', authentication.views.singup_page, name='signup'),
+    path('ticket/<int:id>/', application.views.ticket_detail, name='ticketdetails'),
+    path('ticket/creation/', application.views.ticket_creation, name='ticketcreation'),
+    path('ticket/<int:id>/change/', application.views.ticket_modify, name='ticketmodify'),
+    path('ticket/<int:id>/delete/', application.views.ticket_delete, name='ticketdelete'),
+    path('review/<int:id>/', application.views.review_detail, name='reviewdetails'),
+    path('review/creation/', application.views.review_creation, name='reviewcreation'),
+    path('review/<int:id>/change/', application.views.review_modify, name='reviewmodify'),
+    path('review/<int:id>/delete/', application.views.review_delete, name='reviewdelete'),
+    path('review/follow/', application.views.add_user_follow, name='followUsers'),
+    path('review/follow/<int:id>/delete/', application.views.delete_user_follow, name='deletefollowUsers'),
+    path('ticketReview/creation/', application.views.ticket_Review_creation, name='ticketreviewcreation'),
+
 ]

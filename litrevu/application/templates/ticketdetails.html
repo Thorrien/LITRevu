@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> {{ticket.title}}
+<h2>L'identifiant du ticket {{ ticket.id }}</h2>
+<p> Par {{ticket.user.username}} </p>
+<p> {{ticket.description}} </p>
+{% if ticket.image %}
+    <img src="{{ ticket.image.url }}" alt="{{ ticket.title }}">
+{% endif %}
+<p> Le {{ticket.time_created}} </p>
+
+<a class="nav-link" href="{% url 'reviewcreation' %}">Commenter le ticket</a>
+
+
+<ul>
+    {% for review in ticket.review_set.all %}
+        <li>{{ review.headline }}</li>
+        <!-- Ajoutez d'autres champs de revue que vous souhaitez afficher -->
+    {% endfor %}
+</ul>
+
+
+
+{% endblock %}

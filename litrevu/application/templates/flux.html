@@ -1,4 +1,36 @@
 {% extends 'base.html' %}
+{% load tags %}
 {% block content %}
-    <p>TEST</p>
+
+<h1>Tickets</h1>
+
+<ul>
+    {% for element in reviewAndTicket %}
+
+        {% if element|model_type == 'Ticket'%}
+        <div>
+            <a href="{% url 'ticketdetails' element.id %}">{{ element.title }}</a>
+            <a href="{% url 'ticketmodify' element.id %}">Modifier le ticket</a>
+            <a href="{% url 'ticketdelete' element.id %}">Supprimer le ticket</a>    
+        </div>
+        {% endif %}
+        {% if element|model_type == 'Review'%}
+        <div>
+            <div>
+                {{ element.user }}
+                {{ element.time_created }}
+                <a href="{% url 'reviewdetails' element.id %}">{{ element.headline }}</a>
+                {{ element.body }}
+                <a href="{% url 'reviewmodify' element.id %}">Modifier la revue</a>
+                <a href="{% url 'reviewdelete' element.id %}">Supprimer la revue</a>
+                <div>                        
+                    <h2>ticket {{review.ticket.user}}</h2>
+                    {{element.ticket.title}}
+                    {{element.ticket.image}}
+                </div>                      
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+</ul>
 {% endblock content %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Suivre quelqu'un</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+{{message}}
+
+<h2>Vos Abonnements</h2>
+{% if user_follows %}
+    <ul>
+        {% for follow in user_follows %}
+            <li>{{ follow.followed_user.username }} (ID: {{ follow.followed_user.id }}) <a href="{% url 'deletefollowUsers' follow.id %}">Ne plus suivre</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Vous n'êtes abonné à aucun utilisateur pour le moment.</p>
+{% endif %}
+
+
+<h2>Vos Abonnés</h2>
+{% if folloded_by %}
+    <ul>
+        {% for follow in folloded_by %}
+            <li>{{ follow.user.username }} (ID: {{ follow.user.id }}) </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Vous n'avez aucun utilisateur abonnés à vous pour le moment.</p>
+{% endif %}
+
+{% endblock %}

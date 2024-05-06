@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Create Ticket and Review</h1>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        {{ form.title.label_tag }}
+        {{ form.title }}
+    </div>
+    <div>
+        {{ form.description.label_tag }}
+        {{ form.description }}
+    </div>
+    <div>
+        {{ form.image.label_tag }}
+        {{ form.image }}
+    </div>
+    <div>
+        {{ form.headline.label_tag }}
+        {{ form.headline }}
+    </div>
+    <div>
+        {{ form.body.label_tag }}
+        {{ form.body }}
+    </div>
+    <div>
+        {{ form.rating.label_tag }}
+        {% for choice in form.rating %}
+            {{ choice.tag }} {{ choice.choice_label }}
+        {% endfor %}
+    </div>
+    <button type="submit">Submit</button>
+</form>
+  
+
+{% endblock %}

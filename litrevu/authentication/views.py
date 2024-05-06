@@ -4,6 +4,7 @@ from django.conf import settings
 from . import forms
 
 
+
 def first_page(request):
     form = forms.LoginForm()
     message = ''
@@ -35,5 +36,5 @@ def singup_page(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect(settings.LOGIN_REDIRECT_URL)
+            return redirect('flux')
     return render(request, 'signup.html', context={'form': form})
