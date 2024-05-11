@@ -18,7 +18,7 @@ def flux(request):
         Q(ticket__in=tickets) | Q(user__in=user_follows.values('followed_user')) | Q(user=request.user)
     )
 
-    tickets = tickets.exclude(pk__in=reviews.values('ticket'))
+    #tickets = tickets.exclude(pk__in=reviews.values('ticket'))
     
     reviewAndTicket = sorted(chain(reviews, tickets), key=lambda instance: instance.time_created, reverse=True)
     

@@ -1,12 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1> créationd d'un nouveau Ticket </h1>
-<form action="" method="post" novalidate>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Envoyer">
-  </form>
-  
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 text-center">
+      <h1>Créer un Ticket</h1>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form action="" method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 {% endblock %}

@@ -1,36 +1,208 @@
 {% extends 'base.html' %}
 {% load tags %}
 {% block content %}
+{% load static %}
 
-<h1>Tickets</h1>
+<style>
+    .small-text {
+        font-size: small;
+    }
+</style>
 
-<ul>
-    {% for element in reviewAndTicket %}
+<div class="container col-8">
+    <div >
+        {% for element in reviewAndTicket %}
+            {% if element|model_type == 'Ticket'%}
+            <div class='border mt-4 border-warning rounded' >
+                <div class='justify-content-center mx-2'>
+                    <div class='row '>
+                        <div class='d-flex justify-content-between '>
+                            <div class='d-flex align-items-center'>
+                                {% if not element.user.profile_photo %} 
+                                <img src="{% static 'img/user.png' %}" style="max-width: 15px; height: auto;" alt="Image"> 
+                                {% endif %} -
+                                {{ element.user }}
+                            </div>
+                            <div>
+                                {{ element.time_created }}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        {{element.title}}
+                    </div>
+                    <div class="p-2" > 
+                        <p class='small-text'>{{ element.description }} </p>
+                    </div>
+                    <div >
+                        {% if element.image %}
+                            <img src="{{element.image.url}}" style="max-width: 150px; height: auto;" class="mx-auto d-block " alt="etoile 5">
+                        {% endif %}
+                    </div>
+                </div>
 
-        {% if element|model_type == 'Ticket'%}
-        <div>
-            <a href="{% url 'ticketdetails' element.id %}">{{ element.title }}</a>
-            <a href="{% url 'ticketmodify' element.id %}">Modifier le ticket</a>
-            <a href="{% url 'ticketdelete' element.id %}">Supprimer le ticket</a>    
-        </div>
-        {% endif %}
-        {% if element|model_type == 'Review'%}
-        <div>
-            <div>
-                {{ element.user }}
-                {{ element.time_created }}
-                <a href="{% url 'reviewdetails' element.id %}">{{ element.headline }}</a>
-                {{ element.body }}
-                <a href="{% url 'reviewmodify' element.id %}">Modifier la revue</a>
-                <a href="{% url 'reviewdelete' element.id %}">Supprimer la revue</a>
-                <div>                        
-                    <h2>ticket {{review.ticket.user}}</h2>
-                    {{element.ticket.title}}
-                    {{element.ticket.image}}
-                </div>                      
+                {% if not element.review_set.all %}
+                    <a href="{% url 'reviewcreation' %}" class="btn btn-primary">Ajouter une critique</a>
+                {% else %}
+                    <p class='small-text'> une review a déjà été rédigée </p>
+                {% endif %}
+
             </div>
-        </div>
-        {% endif %}
-    {% endfor %}
-</ul>
+            {% endif %}
+            {% if element|model_type == 'Review'%}
+            <div class='border mb-4 mt-4 border-warning rounded '>
+                <div class='justify-content-center mx-2'>
+                    <div class='row '>
+                        <div class='d-flex justify-content-between '>
+                            <div class='d-flex align-items-center'>
+                                {% if not element.user.profile_photo %} 
+                                <img src="{% static 'img/user.png' %}" style="max-width: 15px; height: auto;" alt="Image"> 
+                                {% endif %} -
+                                {{ element.user }}
+                            </div>
+                            <div>
+                                {{ element.time_created }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class='row '>
+                        <div class='d-flex align-items-center'>
+                            <div>
+                                {{ element.headline }}  - 
+                            </div>    
+                            <div class='mx-2 col-2'>
+                                {% if element.rating == 5 %}
+                                <div class='row '>
+                                    <div class='d-flex '>
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div>  
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                    </div> 
+                                </div> 
+                                {% endif %}
+                                {% if element.rating == 4 %}
+                                <div class='row '>
+                                    <div class='d-flex '>
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div>  
+                                        <div>   
+                                            <img src="{% static 'img/star1.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                    </div> 
+                                </div> 
+                                {% endif %}
+                                {% if element.rating == 3 %}
+                                <div class='row '>
+                                    <div class='d-flex '>
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star1.png' %}" class="w-50" alt="Image">
+                                        </div>  
+                                        <div>   
+                                            <img src="{% static 'img/star1.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                    </div> 
+                                </div> 
+                                {% endif %}
+                                {% if element.rating == 2 %}
+                                <div class='row '>
+                                    <div class='d-flex '>
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star1.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star1.png' %}" class="w-50" alt="Image">
+                                        </div>  
+                                        <div>   
+                                            <img src="{% static 'img/star1.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                    </div> 
+                                </div> 
+                                {% endif %}
+                                {% if element.rating == 1 %}
+                                <div class='row '>
+                                    <div class='d-flex '>
+                                        <div>   
+                                            <img src="{% static 'img/star.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star1.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star1.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                        <div>   
+                                            <img src="{% static 'img/star1.png' %}" class="w-50" alt="Image">
+                                        </div>  
+                                        <div>   
+                                            <img src="{% static 'img/star1.png' %}" class="w-50" alt="Image">
+                                        </div> 
+                                    </div> 
+                                </div> 
+                                {% endif %}
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="p-2" > 
+                        <p class='small-text'>{{ element.body }} </p>
+                    </div>
+                    <a href="{% url 'reviewmodify' element.id %}">Modifier la revue</a>
+                    <a href="{% url 'reviewdelete' element.id %}">Supprimer la revue</a>
+                    <div class=' boxin border mt-4 mx-4 mb-4' >     
+                        <div>
+                            <p>Ticket - {{element.ticket.user}}</p>
+                        </div>
+                        <div>
+                            {{element.ticket.title}}
+                        </div>
+                        <div >
+                            {% if element.ticket.image %}
+                                <img src="{{element.ticket.image.url}}" style="max-width: 150px; height: auto;" class="mx-auto d-block " alt="etoile 5">
+                            {% endif %}
+                        </div>
+                    </div>                      
+                </div>
+            </div>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+
+</div>
 {% endblock content %}

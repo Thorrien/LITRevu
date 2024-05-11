@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import path
 import authentication.views
 import application.views
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,3 +41,7 @@ urlpatterns = [
     path('ticketReview/creation/', application.views.ticket_Review_creation, name='ticketreviewcreation'),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

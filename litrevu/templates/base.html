@@ -5,20 +5,20 @@
         {% bootstrap_css %}
         {% bootstrap_javascript %}
     </head>
-    
-    <nav class="navbar navbar-expand-lg navbar-light bg-light align-items-center">
-        <div class="container-fluid align-middle">
-                <div class="col-6 d-flex justify-content-end" >
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border border-warning align-items-center">
+        <div class="container-fluid ">
+                <div class="col-6 d-flex justify-content-end " >
                     <a class="navbar-brand" href="#">LITRevu</a>
                 </div>
                 {%  if user.is_authenticated %}
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!-- Menu -->
-            <div class="collapse navbar-collapse col-6 justify-content-end" id="navbarSupportedContent">
-                <ul class="navbar-nav">
-                    <li class="nav-item ">
+            <div class="collapse navbar-collapse align-middle col-6 justify-content-end" id="navbarSupportedContent">
+                <ul class="navbar-nav d-lg-flex align-items-center ">
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'flux' %}">Flux</a>
                     </li>
                     <li class="nav-item dropdown">
@@ -33,7 +33,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'followUsers' %}">Abonnements</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item mt-3">
                         <form action="{% url 'logout' %}" method="post" class="nav-link">
                             {% csrf_token %}
                             <button class="btn btn-outline-danger" type="submit">Se déconnecter</button>
@@ -44,10 +44,9 @@
             {% endif %}
         </div>
     </nav>
-        {%  if user.is_authenticated %}
-        <p>Vous êtes connecté en tant que {{ request.user }}. <a href="{% url 'logout' %}">Se déconnecter</a></p>
-        {% endif %}
-        {% block content %}{% endblock content %}
-    </body>
+    <div class="col-12">
+            {% block content %}{% endblock content %}
+    </div>
+</body>
 </html>
 
