@@ -1,7 +1,7 @@
 from application.models import Ticket, Review, UserFollows
 from django import forms
 from django.core.validators import MinValueValidator, MaxValueValidator
-
+from authentication.models import User
 
 class NewTicket(forms.ModelForm):
     class Meta:
@@ -15,11 +15,16 @@ class NewReview(forms.ModelForm):
         model = Review
         fields = '__all__'
 
+class FollowUserForm(forms.Form):
+    username = forms.CharField(label='Nom d\'utilisateur')
 
-class UserFollowsForm(forms.ModelForm):
-    class Meta:
-        model = UserFollows
-        fields = ['followed_user']
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        try:
+            User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise forms.ValidationError("Cet utilisateur n'existe pas.")
+        return username
 
 
 class SearchUserForm(forms.Form):

@@ -2,7 +2,7 @@ from itertools import chain
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from application.models import Ticket, Review, UserFollows
-from application.forms import NewTicket, NewReview, UserFollowsForm, TicketAndReviewForm
+from application.forms import NewTicket, NewReview, FollowUserForm, TicketAndReviewForm
 from authentication.models import User
 from django.db.models import Q
 
@@ -109,26 +109,26 @@ def review_delete(request, id):
 @login_required
 def add_user_follow(request):
     if request.method == 'POST':
-            form = UserFollowsForm(request.POST)
-            if form.is_valid():
-                followed_user = form.cleaned_data['followed_user']
-
-                if not UserFollows.objects.filter(user=request.user, followed_user=followed_user).exists():
-                    user_follow = form.save(commit=False)
-                    user_follow.user = request.user
-                    user_follow.save()
-                    return redirect('followUsers')  
-                else:
-                    form = UserFollowsForm()
-                    user_follows = UserFollows.objects.filter(user=request.user)
-                    return render(request, 'follow.html', {'user_follows': user_follows, 'message': "Vous êtes déjà abonné à cet utilisateur.", 'form': form})
+        form = FollowUserForm(request.POST)
+        if form.is_valid():
+            followed_username = form.cleaned_data['username']
+            followed_user = User.objects.get(username=followed_username)
+            current_user = request.user
+            if current_user != followed_user and not UserFollows.objects.filter(user=request.user, followed_user=followed_user).exists() :
+                UserFollows.objects.get_or_create(user=current_user, followed_user=followed_user)
+                return redirect('followUsers')                  
+            else:
+                form = FollowUserForm()
+                user_follows = UserFollows.objects.filter(user=request.user)
+                folloded_by = UserFollows.objects.filter(followed_user=request.user)
+                return render(request, 'follow.html', {'user_follows': user_follows, 'folloded_by':folloded_by, 'message': "Vous êtes déjà abonné à cet utilisateur.", 'form': form})
     else:
-        form = UserFollowsForm()
-    
+        form = FollowUserForm()
+
     user_follows = UserFollows.objects.filter(user=request.user)
     folloded_by = UserFollows.objects.filter(followed_user=request.user)
-    
     return render(request, 'follow.html', {'form': form, 'folloded_by':folloded_by, 'user_follows': user_follows})
+
 
 @login_required
 def delete_user_follow(request, id):
