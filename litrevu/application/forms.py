@@ -42,9 +42,8 @@ class TicketAndReviewForm(forms.ModelForm):
     body = forms.CharField(label='Body', widget=forms.Textarea)
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user')
+        self.user = kwargs.pop('user')
         super().__init__(*args, **kwargs)
-        self.user = user
 
     def save(self):
         ticket = super().save(commit=False)

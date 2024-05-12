@@ -146,5 +146,5 @@ def ticket_Review_creation(request):
             form.save()
             return redirect('flux')
     else:
-        form = TicketAndReviewForm()
+        form = TicketAndReviewForm(user=request.user)
     return render(request, 'ticketreviewcreation.html', {'form': form})
