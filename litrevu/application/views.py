@@ -142,9 +142,14 @@ def delete_user_follow(request, id):
 def ticket_Review_creation(request):
     if request.method == 'POST':
         form = TicketAndReviewForm(request.POST, request.FILES, user=request.user)
+        print('reussite1')
         if form.is_valid():
+            print('reussite')
             form.save()
             return redirect('flux')
+        else:
+            print(form.errors)
     else:
+        print('echec')
         form = TicketAndReviewForm(user=request.user)
     return render(request, 'ticketreviewcreation.html', {'form': form})
