@@ -2,7 +2,7 @@ from itertools import chain
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from application.models import Ticket, Review, UserFollows
-from application.forms import NewTicket, NewReview, FollowUserForm, TicketAndReviewForm
+from application.forms import TicketForm, NewReview, ReviewFormfromticket, FollowUserForm, TicketAndReviewForm
 from authentication.models import User
 from django.db.models import Q
 
@@ -33,25 +33,24 @@ def ticket_detail(request, id):
 @login_required
 def ticket_creation(request):
     if request.method == 'POST':
-        form = NewTicket(request.POST)
+        form = TicketForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('flux')
     else:
-        form = NewTicket()
+        form = TicketForm(user=request.user)
     return render(request, 'ticketcreation.html', {'form': form})
-
 
 @login_required
 def ticket_modify(request, id):
     ticket = Ticket.objects.get(id=id)
     if request.method == 'POST':
-        form = NewTicket(request.POST, instance=ticket)
+        form = TicketForm(request.POST, instance=ticket)
         if form.is_valid():
             form.save()
             return redirect('flux')
     else:
-        form = NewTicket(instance=ticket)
+        form = TicketForm(instance=ticket)
     return render(request, 'ticketmodify.html', {'form': form})
 
 
@@ -142,14 +141,26 @@ def delete_user_follow(request, id):
 def ticket_Review_creation(request):
     if request.method == 'POST':
         form = TicketAndReviewForm(request.POST, request.FILES, user=request.user)
-        print('reussite1')
         if form.is_valid():
-            print('reussite')
             form.save()
             return redirect('flux')
         else:
             print(form.errors)
     else:
-        print('echec')
         form = TicketAndReviewForm(user=request.user)
     return render(request, 'ticketreviewcreation.html', {'form': form})
+
+@login_required
+def create_review_from_ticket(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+    if request.method == 'POST':
+        form = ReviewFormfromticket(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.ticket = ticket
+            review.user = request.user
+            review.save()
+            return redirect('flux') 
+    else:
+        form = ReviewFormfromticket()
+    return render(request, 'createreview.html', {'form': form, 'ticket': ticket})

@@ -46,7 +46,7 @@
                 </div>
                 <div class="d-flex justify-content-end">
                 {% if not element.review_set.all %}
-                    <a href="{% url 'reviewcreation' %}" class="btn btn-warning mx-4 mb-4">Créer une critique</a>
+                    <a href="{% url 'createreview' element.id %}" class="btn btn-warning mx-4 mb-4">Créer une critique</a>
                 {% else %}
                     <p class='small-text mx-4 mb-4'> Une critique à déjà été rédigée </p>
                 {% endif %}

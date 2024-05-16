@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container  mt-5">
+
+    <div class='border border-warning rounded '>
+        <p> Vous êtes en train de poster en réponse à </p>
+        <div class='d-flex justify-content-center'>
+            <div class='justify-content-center col-10  border border-warning rounded mx-2'>
+                <div class='row '>
+                    <div class='d-flex justify-content-between '>
+                        <div class='d-flex align-items-center mt-2'>
+                            {% if not ticket.user.profile_photo %} 
+                            <img src="{% static 'img/user.png' %}" style="max-width: 15px; height: auto;" alt="Image"> 
+                            {% endif %} -
+                            {{ ticket.user }}  a demandé une critique
+                        </div>
+                        <div>
+                            {{ ticket.time_created }}
+                        </div>
+                    </div>
+                </div>
+                <div class='mt-2'>
+                    {{ticket.title}}
+                </div>
+                <div class="p-2 mt-2" > 
+                    <p class='small-text'>{{ ticket.description }} </p>
+                </div>
+                <div class='mb-4'>
+                    {% if ticket.image %}
+                        <img src="{{ticket.image.url}}" style="max-width: 150px; height: auto;" class="mx-auto d-block " alt="etoile 5">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    <form method="post">
+        {% csrf_token %}
+        <div >
+            <p>Critique</br> </p>
+            <div class='col-12 mt-4 '>
+                <div class="form-group mx-4">
+                    <label for="{{ form.headline.id_for_label }}">Titre</label>
+                    <input type="text" class="form-control" id="{{ form.headline.id_for_label }}" name="{{ form.headline.name }}" >
+                </div>
+            </div>
+            <div class='col-12 mt-4'>
+                <div class="form-group mx-4">
+                    <div>
+                        <label>Note</label>
+                    </div>
+                    <div class="btn-group col-12 btn-group-toggle" data-toggle="buttons">
+                        {% for choice in form.rating %}
+                            <label class="btn">
+                                {{ choice.tag }}
+                                {{ choice.choice_label }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class='col-12 mt-4 '>
+                    <div class="form-group mx-4">
+                        <label for="{{ form.body.id_for_label }}">Commentaire</label>
+                        <textarea class="form-control" style="height: 200px; " id="{{ form.body.id_for_label }}" name="{{ form.body.name }}"></textarea>
+                    </div>
+                </div>
+            
+            </div>
+            <div class="mt-4 d-flex justify-content-end">
+                <button class="btn btn-warning mx-4 mb-4" type="submit">Envoyer</button>
+            </div>
+    </form>
+
+{% endblock %}

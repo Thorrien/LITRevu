@@ -11,7 +11,7 @@
             {% csrf_token %}
             <div class='border border-warning rounded'>
                 <p> Livre / Article </br> </p>
-                <div class='col-12 mt-4 '>
+                <div class='col-12 mt-4'>
                     <div class="form-group mx-4">
                         <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
                         <input type="text" class="form-control mt-2" id="{{ form.title.id_for_label }}" name="{{ form.title.name }}" >
@@ -44,12 +44,6 @@
                         <input type="text" class="form-control" id="{{ form.headline.id_for_label }}" name="{{ form.headline.name }}" >
                     </div>
                 </div>
-                <div class='col-12 mt-4 '>
-                    <div class="form-group mx-4">
-                        <label for="{{ form.body.id_for_label }}">Commentaire</label>
-                        <textarea class="form-control" style="height: 200px; " id="{{ form.body.id_for_label }}" name="{{ form.body.name }}"></textarea>
-                    </div>
-                </div>
                 <div class='col-12 mt-4'>
                     <div class="form-group mx-4">
                         <div>
@@ -63,6 +57,12 @@
                                 </label>
                             {% endfor %}
                         </div>
+                    </div>
+                </div>
+                <div class='col-12 mt-4 '>
+                    <div class="form-group mx-4">
+                        <label for="{{ form.body.id_for_label }}">Commentaire</label>
+                        <textarea class="form-control" style="height: 200px; " id="{{ form.body.id_for_label }}" name="{{ form.body.name }}"></textarea>
                     </div>
                 </div>
                 <div class="mt-4 d-flex justify-content-end">
