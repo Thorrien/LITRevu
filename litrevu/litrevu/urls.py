@@ -40,7 +40,7 @@ urlpatterns = [
     path('review/follow/<int:id>/delete/', application.views.delete_user_follow, name='deletefollowUsers'),
     path('ticketReview/creation/', application.views.ticket_Review_creation, name='ticketreviewcreation'),
     path('create_review/<int:ticket_id>/', application.views.create_review_from_ticket, name='createreview'),
-
+    path('posts/', application.views.fluxperso, name='fluxperso'),
 
 ]
 

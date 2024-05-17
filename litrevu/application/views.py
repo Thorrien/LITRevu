@@ -43,15 +43,15 @@ def ticket_creation(request):
 
 @login_required
 def ticket_modify(request, id):
-    ticket = Ticket.objects.get(id=id)
+    ticket = get_object_or_404(Ticket, id=id)
     if request.method == 'POST':
-        form = TicketForm(request.POST, instance=ticket)
+        form = TicketForm(request.POST, request.FILES, instance=ticket)
         if form.is_valid():
             form.save()
-            return redirect('flux')
+            return redirect('fluxperso')
     else:
         form = TicketForm(instance=ticket)
-    return render(request, 'ticketmodify.html', {'form': form})
+    return render(request, 'ticketmodify.html', {'form': form, 'ticket': ticket})
 
 
 @login_required
@@ -61,8 +61,6 @@ def ticket_delete(request, id):
         ticket.delete()
         return redirect('flux')
     return render(request, 'ticketdelete.html', {'ticket': ticket})
-
-
 
 
 @login_required
@@ -85,15 +83,16 @@ def review_creation(request):
 
 @login_required
 def review_modify(request, id):
-    review = Review.objects.get(id=id)
+    review = get_object_or_404(Review, id=id)
+    ticket = review.ticket
     if request.method == 'POST':
-        form = NewReview(request.POST, instance=review)
+        form = ReviewFormfromticket(request.POST, instance=review)
         if form.is_valid():
             form.save()
-            return redirect('flux')
+            return redirect('fluxperso')  
     else:
-        form = NewReview(instance=review)
-    return render(request, 'reviewmodify.html', {'form': form})
+        form = ReviewFormfromticket(instance=review)
+    return render(request, 'reviewmodify.html', {'form': form, 'ticket': ticket})
 
 
 @login_required
@@ -164,3 +163,14 @@ def create_review_from_ticket(request, ticket_id):
     else:
         form = ReviewFormfromticket()
     return render(request, 'createreview.html', {'form': form, 'ticket': ticket})
+
+@login_required
+def fluxperso(request):
+    tickets2 = Ticket.objects.filter(user=request.user)
+
+    reviews2 = Review.objects.filter(user=request.user)
+    
+    tickets2 = tickets2.exclude(pk__in=reviews2.values('ticket'))
+    reviewAndTicket2 = sorted(chain(reviews2, tickets2), key=lambda instance: instance.time_created, reverse=True)
+
+    return render(request, 'fluxperso.html', {'reviewAndTicket2': reviewAndTicket2})

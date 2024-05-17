@@ -10,12 +10,8 @@
 </style>
 
 <div class="container col-8">
-    <div class="mt-4 d-flex justify-content-center ">
-        <a href="{% url 'ticketcreation' %}" class="btn btn-warning mx-4 mb-4">Demander une critique</a>
-        <a href="{% url 'ticketreviewcreation' %}" class="btn btn-warning mx-4 mb-4">Créer une critique</a>
-    </div>
     <div >
-        {% for element in reviewAndTicket %}
+        {% for element in reviewAndTicket2 %}
             {% if element|model_type == 'Ticket'%}
             <div class='border mt-3 mb-3 border-warning rounded' >
                 <div class='justify-content-center mx-2'>
@@ -55,11 +51,19 @@
                 </div>
                 <div class="d-flex justify-content-end">
                 {% if not element.review_set.all %}
-                    <a href="{% url 'createreview' element.id %}" class="btn btn-warning mx-4 mb-4">Créer une critique</a>
+
                 {% else %}
                     <p class='small-text mx-4 mb-4'> Une critique à déjà été rédigée </p>
                 {% endif %}
+                <div class="d-flex justify-content-end">
+                    {% if element.user == request.user %}
+                        <a href="{% url 'ticketmodify' element.id %}" class="btn btn-sm btn-outline-warning mx-4 mb-4">Modifier le ticket</a>
+                    {% endif %}
+                    {% if element.user == request.user %}
+                        <a href="{% url 'ticketdelete' element.id %}" class="btn btn-sm btn-outline-danger mx-4 mb-4">Supprimer le ticket</a>
+                    {% endif %}
                 </div>
+            </div>
             </div>
             {% endif %}
             {% if element|model_type == 'Review'%}
@@ -203,6 +207,16 @@
                     </div>
                     <div class="p-2" > 
                         <p class='small-text'>{{ element.body }} </p>
+                    </div>
+                    <div class='row'>
+                            <div class="d-flex justify-content-end">
+                                {% if element.user == request.user %}
+                                    <a href="{% url 'reviewmodify' element.id %}" class="btn btn-sm btn-outline-warning mx-4 mb-4">Modifier la revue</a>
+                                {% endif %}
+                                {% if element.user == request.user %}
+                                    <a href="{% url 'reviewdelete' element.id %}" class="btn btn-sm btn-outline-danger mx-4 mb-4">Supprimer la revue</a>
+                                {% endif %}
+                        </div>
                     </div>
                     <div class=' boxin border mt-4 mx-4 mb-4' >     
                         <div>
