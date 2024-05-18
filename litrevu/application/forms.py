@@ -1,6 +1,5 @@
-from application.models import Ticket, Review, UserFollows
+from application.models import Ticket, Review
 from django import forms
-from django.core.validators import MinValueValidator, MaxValueValidator
 from authentication.models import User
 
 
@@ -9,8 +8,11 @@ class TicketForm(forms.ModelForm):
         model = Ticket
         fields = ['title', 'description', 'image']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+            'title': forms.TextInput(attrs={'class': 'form-control',
+                                            'placeholder': 'Title'}),
+            'description': forms.Textarea(
+                attrs={'class': 'form-control',
+                       'placeholder': 'Description'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
@@ -32,6 +34,7 @@ class NewReview(forms.ModelForm):
         model = Review
         fields = '__all__'
 
+
 class FollowUserForm(forms.Form):
     username = forms.CharField(label='Nom d\'utilisateur')
 
@@ -45,12 +48,15 @@ class FollowUserForm(forms.Form):
 
 
 class SearchUserForm(forms.Form):
-    username = forms.CharField(label='Nom d\'utilisateur à suivre', max_length=150)
+    username = forms.CharField(label='Nom d\'utilisateur à suivre',
+                               max_length=150)
 
 
 class TicketAndReviewForm(forms.ModelForm):
-    rating = forms.ChoiceField(label='Rating', choices=[(i, str(i)) for i in range(6)], widget=forms.RadioSelect)
-    
+    rating = forms.ChoiceField(label='Rating',
+                               choices=[(i, str(i)) for i in range(6)],
+                               widget=forms.RadioSelect)
+
     class Meta:
         model = Ticket
         fields = ['title', 'description', 'image']
@@ -75,13 +81,18 @@ class TicketAndReviewForm(forms.ModelForm):
         )
         return ticket, review
 
+
 class ReviewFormfromticket(forms.ModelForm):
-    rating = forms.ChoiceField(label='Rating', choices=[(i, str(i)) for i in range(6)], widget=forms.RadioSelect)
-    
+    rating = forms.ChoiceField(label='Rating',
+                               choices=[(i, str(i)) for i in range(6)],
+                               widget=forms.RadioSelect)
+
     class Meta:
         model = Review
         fields = ['rating', 'headline', 'body']
         widgets = {
-            'headline': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Headline'}),
-            'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Body'}),
+            'headline': forms.TextInput(attrs={'class': 'form-control',
+                                               'placeholder': 'Headline'}),
+            'body': forms.Textarea(attrs={'class': 'form-control',
+                                          'placeholder': 'Body'}),
         }

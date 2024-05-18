@@ -4,7 +4,6 @@ from django.conf import settings
 from . import forms
 
 
-
 def first_page(request):
     form = forms.LoginForm()
     message = ''
