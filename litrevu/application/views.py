@@ -1,7 +1,7 @@
 from itertools import chain
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from application.models import Ticket, Review, UserFollows
+from application.models import Ticket, Review, UserBlock, UserFollows
 from application.forms import TicketForm, NewReview
 from application.forms import ReviewFormfromticket, FollowUserForm
 from application.forms import TicketAndReviewForm
@@ -39,14 +39,18 @@ def flux(request):
         décroissante contenant des instances de Ticket et de Review.
     """
     user_follows = UserFollows.objects.filter(user=request.user)
+    blocked_users = UserBlock.objects.filter(
+        user=request.user).values_list('blocked_user', flat=True)
+
     tickets = Ticket.objects.filter(
         Q(user__in=user_follows.values('followed_user')) | Q(user=request.user)
-    )
+    ).exclude(user__in=blocked_users)
 
     reviews = Review.objects.filter(
         Q(ticket__in=tickets) | Q(user__in=user_follows.values(
             'followed_user')) | Q(user=request.user)
-    )
+    ).exclude(user__in=blocked_users)
+
     reviewAndTicket = sorted(chain(reviews, tickets),
                              key=lambda instance: instance.time_created,
                              reverse=True)
@@ -299,7 +303,10 @@ def add_user_follow(request):
             followed_username = form.cleaned_data['username']
             followed_user = User.objects.get(username=followed_username)
             current_user = request.user
-            if current_user != followed_user and not UserFollows.objects.filter(user=request.user, followed_user=followed_user).exists():
+            if (current_user != followed_user and
+                not UserFollows.objects.filter(
+                    user=request.user,
+                    followed_user=followed_user).exists()):
                 UserFollows.objects.get_or_create(user=current_user,
                                                   followed_user=followed_user)
                 return redirect('followUsers')
@@ -493,3 +500,18 @@ def fluxperso(request):
 
     return render(request, 'fluxperso.html',
                   {'reviewAndTicket2': reviewAndTicket2})
+
+
+def block_user(request, user_id):
+    user_to_block = get_object_or_404(User, id=user_id)
+    if request.user != user_to_block:
+        UserBlock.objects.get_or_create(user=request.user,
+                                        blocked_user=user_to_block)
+    return redirect('flux')
+
+
+def unblock_user(request, user_id):
+    user_to_unblock = get_object_or_404(User, id=user_id)
+    UserBlock.objects.filter(user=request.user,
+                             blocked_user=user_to_unblock).delete()
+    return redirect('flux')

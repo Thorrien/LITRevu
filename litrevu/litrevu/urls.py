@@ -51,7 +51,10 @@ urlpatterns = [
          application.views.create_review_from_ticket,
          name='createreview'),
     path('posts/', application.views.fluxperso, name='fluxperso'),
-
+    path('block_user/<int:user_id>/',
+         application.views.block_user, name='block_user'),
+    path('unblock_user/<int:user_id>/',
+         application.views.unblock_user, name='unblock_user'),
 ]
 
 if settings.DEBUG:

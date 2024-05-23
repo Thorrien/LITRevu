@@ -34,3 +34,14 @@ class UserFollows(models.Model):
 
     class Meta:
         unique_together = ('user', 'followed_user')
+
+
+class UserBlock(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             related_name='blocking', on_delete=models.CASCADE)
+    blocked_user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                     related_name='blocked_by',
+                                     on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'blocked_user')

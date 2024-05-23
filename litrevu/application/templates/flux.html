@@ -33,7 +33,7 @@
                                 {% if not element.user.profile_photo %} 
                                 <img src="{% static 'img/user.png' %}" style="max-width: 15px; height: auto;" alt="Image"> 
                                 {% endif %} -
-                                {{ element.user }}
+                                {{ element.user }} - <a href="{% url 'block_user' element.user.id %}"><img src="{% static 'img/interdit.png' %}" style="max-width: 15px; height: auto;" alt="Image"></a>
                             </div>
                             <div>
                                 {{ element.time_created }}
