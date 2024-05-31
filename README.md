@@ -36,19 +36,13 @@ Ce projet est une application web basée sur Django pour gérer des tickets et d
     ```bash
     pip install -r requirements.txt
     ```
-4. Appliquez les migrations :
+4. Créez un superutilisateur :
     ```bash
-    python manage.py makemigrations
-    python manage.py migrate
+    python manage.py createsuperuser
     ```
-5. Créez un superutilisateur :
+5. Lancez le serveur de développement :
     ```bash
-    python manage.py makemigrations
-    python manage.py migrate
+    python manage.py runserver
     ```
-6. Lancez le serveur de développement :
-    ```bash
-    python manage.py makemigrations
-    python manage.py migrate
-    ```
-7. Ouvrez votre navigateur web et allez sur http://127.0.0.1:8000.
+6. Ouvrez votre navigateur web et allez sur http://127.0.0.1:8000.
+7. Ajouter des user a suivre comme Thorrien ou Achille
